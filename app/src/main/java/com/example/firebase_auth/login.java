@@ -1,0 +1,113 @@
+package com.example.firebase_auth;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+public class login extends AppCompatActivity {
+
+    EditText emaillog;
+    EditText passwordlog;
+
+    Button buttonlog;
+
+    FirebaseAuth mAuth;
+    ProgressBar progressBar;
+
+    TextView click_sign_up;
+
+
+
+
+
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_login);
+        mAuth= FirebaseAuth.getInstance();
+
+
+        click_sign_up=findViewById(R.id.click_sign_up);
+        emaillog=findViewById(R.id.email);
+        passwordlog=findViewById(R.id.pasword);
+        buttonlog=findViewById(R.id.btn);
+        progressBar=findViewById(R.id.progessbar);
+
+        click_sign_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), registration.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        buttonlog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email,password;
+                email=String.valueOf(emaillog.getText());
+                password=String.valueOf(passwordlog.getText());
+
+                if(TextUtils.isEmpty(email)){
+                    Toast.makeText(login.this,"Enter email", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(password)){
+                    Toast.makeText(login.this,"Enter password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                progressBar.setVisibility(View.GONE);
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Toast.makeText(login.this, "Authentication successful",
+                                            Toast.LENGTH_SHORT).show();
+                                    Intent intent=new Intent(getApplicationContext(), third.class);
+                                    startActivity(intent);
+                                    finish();
+
+
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(login.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
+
+            }
+        });
+
+
+    }
+}

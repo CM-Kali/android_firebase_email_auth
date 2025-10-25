@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">firebase_auth</string>
+    <string name="login">Login</string>
+    <string name="enter_password">Enter password</string>
+    <string name="register">register</string>
+    <string name="click_to_register">Click to Register</string>
+</resources>
