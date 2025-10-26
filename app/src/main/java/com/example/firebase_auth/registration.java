@@ -29,6 +29,18 @@ public class registration extends AppCompatActivity {
     ProgressBar progressBar;
     TextView click_sign_in;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            Intent intent = new Intent(getApplicationContext(), third.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
 
 
     @Override
@@ -56,7 +68,7 @@ public class registration extends AppCompatActivity {
         buttonReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
+               // progressBar.setVisibility(View.VISIBLE);
                 String email,password;
                email=String.valueOf(emailreg.getText());
                password=String.valueOf(passwordreg.getText());
